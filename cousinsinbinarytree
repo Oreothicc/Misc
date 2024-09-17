@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<TreeNode>> getLevels(TreeNode root){
+        List<List<TreeNode>> arr=new ArrayList<>();
+        if(root==null){return arr;}
+        Queue<TreeNode> q=new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            int n=q.size();
+            List<TreeNode> inner=new ArrayList<>();
+            for(int i=0;i<n;i++){
+                TreeNode c=q.poll();
+                inner.add(c);
+                if(c.left!=null){
+                    q.add(c.left);
+                }
+                if(c.right!=null){
+                    q.add(c.right);
+                }
+            }
+            arr.add(inner);
+        }
+        return arr;        
+    }
+
+    public boolean isCousins(TreeNode root, int x, int y) {
+        List<List<TreeNode>> arr=getLevels(root);
+        int xlvl=0,ylvl=0;
+        for(int i=0;i<arr.size();i++){
+            List<TreeNode> inner=arr.get(i);
+            for(int j=0;j<inner.size();j++){
+                if(inner.get(j).val==x){
+                    xlvl=i;
+                    System.out.println("x level is "+i);
+                }
+                if(inner.get(j).val==y){
+                    ylvl=i;
+
+                    System.out.println("y level is "+i);
+                }
+            }
+        }
+        if(xlvl==ylvl){
+            return true;
+        }
+        return false;
+    }
+}
